@@ -27,11 +27,11 @@ usersRouter.get('/:id', async (req, res) => {
 })
 
 
-// const show = await user.getShows();
-
-
 // // All shows watched by a user
 // usersRouter.get('/:id/shows', async (req, res) => {
+//     const userShows = await User.getShows({ where: { id: req.params.id } });
+//     res.status(200).send(userShows);
+
 //     const userIndex = (req.params.id - 1);
 //     try {
 //         const showsWatchedByUser = await Show.findAll({ where: { id: req.params.id } })
@@ -41,10 +41,15 @@ usersRouter.get('/:id', async (req, res) => {
 //     }
 // })
 
-// // Update and add a show is a user has watched it
-// usersRouter.put('', (req, res) => {
 
-// })
+// const show = await user.getShows();
+
+
+// a PUT request to  /users/2/shows/9 should update the 9th show for the 2nd user.
+// Update and add a show if a user has watched it
+usersRouter.put('/:id/shows/:showId', async (req, res) => {
+    const userId = await Show.update({ userId: req.params.id })
+})
 
 
 module.exports = usersRouter;
