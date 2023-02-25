@@ -2,6 +2,7 @@ const express = require('express');
 const {db} = require('./db');
 const app = express();
 const usersRouter = require('./routes/usersRouter');
+const showsRouter = require('./routes/showsRouter')
 const seed = require('./seed')
 seed();
 
@@ -13,6 +14,8 @@ app.use('/users', usersRouter)
 app.use('/users/:id', usersRouter)
 app.use('/users/:id/shows', usersRouter)
 app.use('/users/:id/shows/:showId', usersRouter)
+
+app.use('/shows', showsRouter)
 
 
 app.listen(port, () => {

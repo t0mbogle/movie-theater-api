@@ -1,15 +1,12 @@
 const express = require('express');
-const {Sequelize} = require('sequelize');
 const usersRouter = express.Router();
-// const users = require('../users.json');
-// const shows = require('../shows.json');
 const { User, Show } = require('../models/index');
 
 // Read
 // All users
 usersRouter.get('/', async (req, res) => {
     const users = await User.findAll();
-    res.send(users);
+    res.send({ msg: 'Successfully fetched all users', users: users});
 })
 
 // One user
