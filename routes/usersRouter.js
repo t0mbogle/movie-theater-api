@@ -28,27 +28,26 @@ usersRouter.get('/:id', async (req, res) => {
 
 
 // // All shows watched by a user
-// usersRouter.get('/:id/shows', async (req, res) => {
-//     const userShows = await User.getShows({ where: { id: req.params.id } });
-//     res.status(200).send(userShows);
+usersRouter.get('/:id/shows', async (req, res) => {
+    // request all shows a user has watched from the userId of a show
+    const allShows = await Show.findAll({ where: { userId: req.params.id } })
 
-//     const userIndex = (req.params.id - 1);
-//     try {
-//         const showsWatchedByUser = await Show.findAll({ where: { id: req.params.id } })
+    try {
+        if (allShows.length < 1) {
+            throw new Error(`No shows watched by user:${req.params.id}`)
+        } else {
+            res.status(200).send({ msg: `Successfully retrieved shows watched by user: ${req.params.id}`, shows: allShows })
+        }
+    } catch (error) {
+        res.status(400).send({ err: error.message })
+    }
 
-//     } catch (error) {
+})
 
-//     }
-// })
-
-
-// const show = await user.getShows();
-
-
-// a PUT request to  /users/2/shows/9 should update the 9th show for the 2nd user.
 // Update and add a show if a user has watched it
 usersRouter.put('/:id/shows/:showId', async (req, res) => {
-    const userId = await Show.update({ userId: req.params.id })
+    await Show.update({ userId: req.params.id }, { where: { id: req.params.showId } })
+    res.status(200).send('Show watched by user')
 })
 
 
