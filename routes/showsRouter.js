@@ -24,7 +24,20 @@ showsRouter.get('/:id', async (req, res) => {
 })
 
 // get all shows of a particular genre
+showsRouter.get('/genres/:genreType', async (req, res) => {
+    const showsOfType = await Show.findAll({ where: { genre: req.params.genreType } })
 
+    try {
+        if (showsOfType.length < 1) {
+            throw new Error(`No shows of genre: ${req.params.genreType}!`)
+        } else {
+            res.status(200).send({ msg: `All shows of type ${req.params.genreType}`, Shows: showsOfType })
+        }
+    } catch (error) {
+        res.status(400).send({ err: error.message })
+    }
+
+})
 
 // Update
 // put/update the rating of a show that has been watched

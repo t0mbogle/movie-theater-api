@@ -16,6 +16,8 @@ app.use('/users/:id/shows', usersRouter)
 app.use('/users/:id/shows/:showId', usersRouter)
 
 app.use('/shows', showsRouter)
+app.use('/shows/:id', showsRouter)
+
 
 
 app.listen(port, () => {
