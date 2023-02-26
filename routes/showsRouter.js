@@ -42,21 +42,20 @@ showsRouter.get('/genres/:genreType', async (req, res) => {
 
 // Update
 // put/update the rating of a show that has been watched
-// showsRouter.put('/:id/watched', async (req, res) => {
-//     const 
-//     const updateShow = await Show.findByPk({ where: { id: req.params.id } })
+showsRouter.put('/:id/watched', async (req, res) => {
+    const updateShow = await Show.findByPk(req.params.id)
 
-//     try {
-//         if (updateShow.userId === null) {
-//             throw new Error("Show has not been watched")
-//         } else {
-//             updateShow = req.body
-//             res.status(201).send({ msg: "Show rating updated", show: updateShow })
-//         }
-//     } catch (error) {
-//         res.status(400).send({ err: error.message })
-//     }
-// })
+    try {
+        if (updateShow.userId === null) {
+            throw new Error("Show has not been watched")
+        } else {
+            updateShow.rating = req.body.rating
+            res.status(201).send({ msg: "Show rating updated", show: updateShow })
+        }
+    } catch (error) {
+        res.status(400).send({ err: error.message })
+    }
+})
 
 // put/update the status of a show 
 showsRouter.put('/:id/updates', async (req, res) => {
@@ -74,12 +73,11 @@ showsRouter.put('/:id/updates', async (req, res) => {
 
 // Delete
 showsRouter.delete('/:id', async (req, res) => {
-    const show = Show.findByPk(req.params.id)
     try {
-        if (!show.id) { // if there is no content at the entered id
+        const show = await Show.destroy({ where: { id: req.params.id } })
+        if (!show) { // if there is no content at the entered id
             throw new Error(`No show in database at id: ${req.params.id}`)
         } else {
-            await Show.destroy({ where: { id: req.params.id } })
             res.status(200).send({ msg: "Successfully deleted show" })
         }
     } catch (error) {
