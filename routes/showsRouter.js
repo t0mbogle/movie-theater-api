@@ -1,6 +1,7 @@
 const express = require('express');
+const { check, validationResult } = require('express-validator');
 const showsRouter = express.Router();
-const { User, Show } = require('../models/index');
+const { Show } = require('../models/index');
 
 // Read
 // get all shows
@@ -42,7 +43,7 @@ showsRouter.get('/genres/:genreType', async (req, res) => {
 
 // Update
 // put/update the rating of a show that has been watched
-showsRouter.put('/:id/watched', async (req, res) => {
+showsRouter.put('/:id/watched', [check("rating").not().isEmpty().trim()], async (req, res) => {
     const updateShow = await Show.findByPk(req.params.id)
 
     try {
@@ -58,7 +59,7 @@ showsRouter.put('/:id/watched', async (req, res) => {
 })
 
 // put/update the status of a show 
-showsRouter.put('/:id/updates', async (req, res) => {
+showsRouter.put('/:id/updates', [check("status").not().isEmpty().trim().isLength({ min: 5, max: 25 })], async (req, res) => {
     try {
         if (req.body.status !== "cancelled" && req.body.status !== "on-going") {
             throw new Error("Show can only be updated to 'cancelled' or 'on-going'")
