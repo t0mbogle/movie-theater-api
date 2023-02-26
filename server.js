@@ -11,14 +11,7 @@ const port = 3000;
 app.use(express.json())
 
 app.use('/users', usersRouter)
-app.use('/users/:id', usersRouter)
-app.use('/users/:id/shows', usersRouter)
-app.use('/users/:id/shows/:showId', usersRouter)
-
 app.use('/shows', showsRouter)
-app.use('/shows/:id', showsRouter)
-
-
 
 app.listen(port, () => {
     db.sync();
